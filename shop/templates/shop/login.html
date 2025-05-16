@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>ورود</title></head>
+<body>
+    <h2>ورود</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">ورود</button>
+    </form>
+    <p>ثبت نام نکردی؟ <a href="{% url 'signup' %}">ثبت نام</a></p>
+</body>
+</html>

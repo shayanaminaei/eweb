@@ -4,13 +4,19 @@
     <title>محصولات</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
+        <p>سلام {{ user.username }} | <a href="{% url 'logout' %}">خروج</a> | <a href="{% url 'cart_detail' %}">سبد خرید</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">ورود</a> | <a href="{% url 'signup' %}">ثبت نام</a></p>
+    {% endif %}
+
     <h1>محصولات</h1>
 
     <nav>
         <a href="{% url 'home' %}">همه</a>
         {% for cat in categories %}
-            <a href="{% url 'home' %}?category={{ cat.id }}"
-               {% if selected_category == cat.id %} style="font-weight:bold;" {% endif %}>
+            <a href="{% url 'home' %}?category={{ cat.slug }}"
+               {% if selected_category == cat.slug %} style="font-weight:bold;" {% endif %}>
                 {{ cat.name }}
             </a>
         {% endfor %}
@@ -19,9 +25,17 @@
     <ul>
         {% for product in products %}
             <li>
-                <a href="{% url 'product_detail' product.id %}">
+                <a href="{% url 'product_detail' product.slug %}">
                     {{ product.name }} - {{ product.price }} تومان
                 </a>
+                {% if product.available and product.stock > 0 %}
+                    <form action="{% url 'add_to_cart' product.slug %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">افزودن به سبد خرید</button>
+                    </form>
+                {% else %}
+                    <span style="color:red;">ناموجود</span>
+                {% endif %}
             </li>
         {% empty %}
             <li>محصولی موجود نیست.</li>

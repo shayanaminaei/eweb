@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ product.name }}</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>
+            سلام {{ user.username }} |
+            <a href="{% url 'logout' %}">خروج</a> |
+            <a href="{% url 'cart_detail' %}">سبد خرید</a>
+        </p>
+    {% else %}
+        <p>
+            <a href="{% url 'login' %}">ورود</a> |
+            <a href="{% url 'signup' %}">ثبت نام</a>
+        </p>
+    {% endif %}
+
+    <h1>{{ product.name }}</h1>
+    <p>دسته‌بندی: {{ product.category.name }}</p>
+    <p>قیمت: {{ product.price }} تومان</p>
+    <p>موجودی: {{ product.stock }}</p>
+    <p>توضیحات:</p>
+    <p>{{ product.description|linebreaks }}</p>
+
+    {% if product.available and product.stock > 0 %}
+        <form action="{% url 'add_to_cart' product.slug %}" method="post">
+            {% csrf_token %}
+            <button type="submit">افزودن به سبد خرید</button>
+        </form>
+    {% else %}
+        <p style="color:red;">این محصول در حال حاضر ناموجود است.</p>
+    {% endif %}
+
+    <p><a href="{% url 'home' %}">بازگشت به صفحه محصولات</a></p>
+</body>
+</html>

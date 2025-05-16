@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>لیست محصولات</title>
+    <style>
+        nav a { margin: 0 5px; text-decoration: none; }
+        nav a.active { font-weight: bold; }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>سلام {{ user.username }} | <a href="{% url 'logout' %}">خروج</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">ورود</a> | <a href="{% url 'signup' %}">ثبت نام</a></p>
+    {% endif %}
+
+    <h1>محصولات</h1>
+
+    <nav>
+        <a href="{% url 'home' %}" class="{% if not selected_category %}active{% endif %}">همه</a>
+        {% for cat in categories %}
+            <a href="{% url 'home' %}?category={{ cat.id }}" class="{% if selected_category == cat.id %}active{% endif %}">
+                {{ cat.name }}
+            </a>
+        {% endfor %}
+    </nav>
+
+    <ul>
+        {% for product in products %}
+            <li>
+                <a href="{% url 'product_detail' product.slug %}">
+                    {{ product.name }} - {{ product.price }} تومان
+                </a>
+            </li>
+        {% empty %}
+            <li>محصولی موجود نیست.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

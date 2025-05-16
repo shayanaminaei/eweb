@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>سبد خرید</title>
+</head>
+<body>
+    <h1>سبد خرید شما</h1>
+    <a href="{% url 'home' %}">بازگشت به محصولات</a>
+
+    {% if cart_items %}
+        <table>
+            <tr>
+                <th>نام محصول</th>
+                <th>تعداد</th>
+                <th>قیمت کل</th>
+                <th>عملیات</th>
+            </tr>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>
+                    <form action="{% url 'update_cart_item' item.product.slug %}" method="post">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="0" />
+                        <button type="submit">به‌روزرسانی</button>
+                    </form>
+                </td>
+                <td>{{ item.get_total_price }} تومان</td>
+                <td>
+                    <a href="{% url 'remove_from_cart' item.product.slug %}">حذف</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p>جمع کل: {{ total_price }} تومان</p>
+    {% else %}
+        <p>سبد خرید شما خالی است.</p>
+    {% endif %}
+</body>
+</html>
