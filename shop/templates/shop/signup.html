@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html>
-<head><title>ثبت نام</title></head>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>ثبت نام</title>
+</head>
 <body>
-    <h2>ثبت نام</h2>
+    <h1>ثبت نام</h1>
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">ثبت نام</button>
     </form>
-    <p>قبلا ثبت نام کردی؟ <a href="{% url 'login' %}">ورود</a></p>
+
+    <p>قبلاً ثبت نام کرده‌اید؟ <a href="{% url 'login' %}">وارد شوید</a></p>
 </body>
 </html>

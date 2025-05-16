@@ -1,7 +1,7 @@
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import path, include
 
 urlpatterns = [
-    path('', views.product_list, name='home'),  # صفحه لیست محصولات
-    path('product/<slug:slug>/', views.product_detail, name='product_detail'),  # صفحه جزئیات محصول
+    path('admin/', admin.site.urls),
+    path('', include('shop.urls')),  # فرض کردیم نام اپلیکیشن shop هست
 ]
