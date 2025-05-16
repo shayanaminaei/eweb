@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>محصولات</title>
+</head>
+<body>
+    <h1>محصولات</h1>
+
+    <nav>
+        <a href="{% url 'home' %}">همه</a>
+        {% for cat in categories %}
+            <a href="{% url 'home' %}?category={{ cat.id }}"
+               {% if selected_category == cat.id %} style="font-weight:bold;" {% endif %}>
+                {{ cat.name }}
+            </a>
+        {% endfor %}
+    </nav>
+
+    <ul>
+        {% for product in products %}
+            <li>
+                <a href="{% url 'product_detail' product.id %}">
+                    {{ product.name }} - {{ product.price }} تومان
+                </a>
+            </li>
+        {% empty %}
+            <li>محصولی موجود نیست.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
